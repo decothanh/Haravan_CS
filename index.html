@@ -1,1 +1,1445 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Customer Service - UX Tối Ưu</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .role-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .schedule-card {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .process-card {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 8px;
+        }
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 40px 0;
+        }
+        .performance-gauge {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        .gauge-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 8;
+        }
+        .gauge-fill {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dasharray 1s ease;
+        }
+        .rotation-timeline {
+            position: relative;
+        }
+        .rotation-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+        @media print {
+            body { font-size: 12px; }
+            .no-print { display: none; }
+            .print-break { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-4">
+                    <i class="fas fa-headset mr-3"></i>Hệ Thống Quản Lý Customer Service
+                </h1>
+                <p class="text-xl opacity-90">Đầy Đủ Điều Kiện Làm Việc & Quy Trình Quản Lý</p>
+            </div>
+            
+            <!-- Key Metrics Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-fold">6</div>
+                    <div class="text-sm opacity-80">Nhân Viên</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-fold">13h</div>
+                    <div class="text-sm opacity-80">Hoạt Động/Ngày</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-fold">7</div>
+                    <div class="text-sm opacity-80">Ngày/Tuần</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-fold">40h</div>
+                    <div class="text-sm opacity-80">Làm Việc/Tuần</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 no-print">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center py-3 space-x-2 md:space-x-6">
+                <a href="#conditions" class="nav-item px-3 py-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-clock mr-1"></i>Điều Kiện Làm Việc
+                </a>
+                <a href="#structure" class="nav-item px-3 py-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-sitemap mr-1"></i>Cấu Trúc Tổ Chức
+                </a>
+                <a href="#manager" class="nav-item px-3 py-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-crown mr-1"></i>Vai Trò Manager
+                </a>
+                <a href="#leader" class="nav-item px-3 py-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-users mr-1"></i>Vai Trò Trưởng Ca
+                </a>
+                <a href="#schedule" class="nav-item px-3 py-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-calendar mr-1"></i>Hệ Thống Chia Ca
+                </a>
+                <a href="#evaluation" class="nav-item px-3 py-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-chart-line mr-1"></i>Đánh Giá & Báo Cáo
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- Điều Kiện Làm Việc -->
+        <section id="conditions" class="mb-12 print-break">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-briefcase text-blue-600 mr-3"></i>Điều Kiện Làm Việc
+            </h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Giờ Làm Việc -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-clock text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Giờ Làm Việc</h3>
+                            <p class="text-3xl font-bold text-blue-600">40h</p>
+                            <p class="text-sm text-gray-600">mỗi tuần/người</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <p>• 8h/ngày × 5 ngày/tuần</p>
+                        <p>• 2 ngày nghỉ cuối tuần</p>
+                    </div>
+                </div>
+
+                <!-- Ngày Phép -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-calendar-alt text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Ngày Phép</h3>
+                            <p class="text-3xl font-bold text-green-600">1</p>
+                            <p class="text-sm text-gray-600">ngày/tháng/người</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <p>• 12 ngày phép/năm</p>
+                        <p>• Có kế hoạch trước 2 tuần</p>
+                    </div>
+                </div>
+
+                <!-- Vắng Mặt -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Vắng Mặt</h3>
+                            <p class="text-3xl font-bold text-yellow-600">2h</p>
+                            <p class="text-sm text-gray-600">đột xuất/tháng/người</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <p>• Có kế hoạch backup</p>
+                        <p>• Emergency support</p>
+                    </div>
+                </div>
+
+                <!-- Họp Team -->
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-users text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Họp Team</h3>
+                            <p class="text-3xl font-bold text-purple-600">1h</p>
+                            <p class="text-sm text-gray-600">mỗi tuần</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <p>• Thứ 3, 16:00-17:00</p>
+                        <p>• Tối thiểu 4/6 người</p>
+                    </div>
+                </div>
+
+                <!-- Chi Tiết Chế Độ Làm Việc -->
+                <div class="md:col-span-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-4">
+                        <i class="fas fa-info-circle text-blue-600 mr-2"></i>Chi Tiết Chế Độ Làm Việc
+                    </h4>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h5 class="font-semibold text-gray-700 mb-2">⏰ Khung Giờ Hoạt Động</h5>
+                            <div class="bg-white rounded p-3 text-sm">
+                                <p><strong>Tổng:</strong> 08:00 - 21:00 (13 giờ/ngày)</p>
+                                <p><strong>7 ngày/tuần:</strong> Bao gồm T7, CN</p>
+                                <p><strong>Kênh hỗ trợ:</strong> Chat, Call, Email</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-semibold text-gray-700 mb-2">📊 Phân Bổ Nhân Lực</h5>
+                            <div class="bg-white rounded p-3 text-sm">
+                                <p><strong>Cao điểm sáng (09h-11h):</strong> 4 người</p>
+                                <p><strong>Cao điểm chiều (14h-16h):</strong> 4 người</p>
+                                <p><strong>Thấp điểm:</strong> 2 người</p>
+                                <p><strong>Cuối tuần:</strong> 2 người/ca</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Họp Team & Đào Tạo -->
+            <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chalkboard-teacher text-purple-600 mr-3"></i>Họp Team & Đào Tạo
+                </h4>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-clock text-purple-600 text-xl"></i>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Thời Gian</h5>
+                        <p class="text-sm text-gray-600">Thứ 3, 16:00-17:00</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-users text-purple-600 text-xl"></i>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Yêu Cầu</h5>
+                        <p class="text-sm text-gray-600">Tối thiểu 4/6 người</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Nội Dung</h5>
+                        <p class="text-sm text-gray-600">Training + Review + Planning</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                    <h6 class="font-semibold text-gray-700 mb-2">📋 Agenda Họp Tuần</h6>
+                    <div class="grid md:grid-cols-4 gap-3 text-sm">
+                        <div class="bg-white p-3 rounded">
+                            <strong>16:00-16:15</strong><br>
+                            Performance Review
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <strong>16:15-16:35</strong><br>
+                            Training Session
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <strong>16:35-16:50</strong><br>
+                            Team Sync
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <strong>16:50-17:00</strong><br>
+                            Action Planning
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Cấu Trúc Tổ Chức -->
+        <section id="structure" class="mb-12 print-break">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-sitemap text-green-600 mr-3"></i>Cấu Trúc Tổ Chức
+            </h2>
+            
+            <!-- Organizational Chart -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <div class="flex flex-col items-center space-y-8">
+                    <!-- Manager Level -->
+                    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-4 rounded-lg shadow-lg text-center">
+                        <i class="fas fa-crown text-2xl mb-2"></i>
+                        <h3 class="font-bold text-lg">MANAGER</h3>
+                        <p class="text-sm opacity-90">Strategic Leader</p>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="flex items-center">
+                        <i class="fas fa-arrow-down text-gray-400 text-2xl"></i>
+                    </div>
+                    
+                    <!-- Team Leaders Level -->
+                    <div class="flex flex-wrap justify-center gap-8">
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-4 rounded-lg shadow-lg text-center">
+                            <i class="fas fa-user-tie text-2xl mb-2"></i>
+                            <h3 class="font-bold">TRƯỞNG CA A</h3>
+                            <p class="text-sm opacity-90">Working Leader</p>
+                            <p class="text-xs">08:00-16:00</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-4 rounded-lg shadow-lg text-center">
+                            <i class="fas fa-user-tie text-2xl mb-2"></i>
+                            <h3 class="font-bold">TRƯỞNG CA B</h3>
+                            <p class="text-sm opacity-90">Working Leader</p>
+                            <p class="text-xs">13:00-21:00</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="flex items-center">
+                        <i class="fas fa-arrow-down text-gray-400 text-2xl"></i>
+                    </div>
+                    
+                    <!-- Agents Level -->
+                    <div class="bg-gradient-to-r from-green-400 to-teal-500 text-white px-8 py-4 rounded-lg shadow-lg text-center">
+                        <i class="fas fa-headset text-2xl mb-2"></i>
+                        <h3 class="font-bold text-lg">AGENTS (6 người)</h3>
+                        <p class="text-sm opacity-90">Front-line Staff</p>
+                        <p class="text-xs">Rotation Leadership System</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capacity Analysis -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-calculator text-blue-600 mr-3"></i>Phân Tích Năng Lực
+                    </h4>
+                    
+                    <div class="chart-container">
+                        <canvas id="capacityChart"></canvas>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mt-4 text-sm">
+                        <div class="bg-blue-50 p-3 rounded">
+                            <strong>Total Capacity:</strong><br>
+                            240h/tuần (6 × 40h)
+                        </div>
+                        <div class="bg-green-50 p-3 rounded">
+                            <strong>Required Coverage:</strong><br>
+                            91h/tuần (13h × 7 ngày)
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded">
+                            <strong>Efficiency Ratio:</strong><br>
+                            264% (Dư thừa flexibility)
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded">
+                            <strong>Backup Buffer:</strong><br>
+                            149h dự phòng
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chart-pie text-green-600 mr-3"></i>Phân Bổ Workload
+                    </h4>
+                    
+                    <div class="chart-container">
+                        <canvas id="workloadChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-4 space-y-2 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="flex items-center"><span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>Cao điểm sáng</span>
+                            <span class="font-semibold">4 người (09:00-11:00)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="flex items-center"><span class="w-3 h-3 bg-orange-500 rounded-full mr-2"></span>Cao điểm chiều</span>
+                            <span class="font-semibold">4 người (14:00-16:00)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>Thấp điểm</span>
+                            <span class="font-semibold">2 người</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>Cuối tuần</span>
+                            <span class="font-semibold">2 người/ca</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Vai Trò Manager -->
+        <section id="manager" class="mb-12 print-break">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-crown text-yellow-600 mr-3"></i>Vai Trò Manager
+            </h2>
+            
+            <!-- Manager Responsibilities -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-chess text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800">Strategic Planning</h3>
+                        <p class="text-3xl font-bold text-blue-600">30%</p>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Lập kế hoạch dài hạn</li>
+                        <li>• Phân bổ nguồn lực</li>
+                        <li>• Dự báo workload</li>
+                        <li>• Budget planning</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-cogs text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800">Operations</h3>
+                        <p class="text-3xl font-bold text-green-600">40%</p>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Tối ưu quy trình</li>
+                        <li>• AI & Automation</li>
+                        <li>• Knowledge management</li>
+                        <li>• Tool optimization</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                            <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800">Performance</h3>
+                        <p class="text-3xl font-bold text-purple-600">30%</p>
+                    </div>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Metrics monitoring</li>
+                        <li>• Quality control</li>
+                        <li>• Continuous improvement</li>
+                        <li>• Team development</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Manager KPIs Dashboard -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-tachometer-alt text-blue-600 mr-3"></i>Manager KPIs Dashboard
+                </h4>
+                
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="performance-gauge mb-3">
+                            <svg width="120" height="120" class="transform -rotate-90">
+                                <circle cx="60" cy="60" r="50" class="gauge-bg"></circle>
+                                <circle cx="60" cy="60" r="50" class="gauge-fill" stroke="#3b82f6" 
+                                        stroke-dasharray="307" stroke-dashoffset="30"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-600">97%</div>
+                                    <div class="text-xs text-gray-500">Target: ≥95%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Team SLA</h5>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="performance-gauge mb-3">
+                            <svg width="120" height="120" class="transform -rotate-90">
+                                <circle cx="60" cy="60" r="50" class="gauge-bg"></circle>
+                                <circle cx="60" cy="60" r="50" class="gauge-fill" stroke="#10b981" 
+                                        stroke-dasharray="314" stroke-dashoffset="63"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-green-600">2%</div>
+                                    <div class="text-xs text-gray-500">Target: ±3%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Cost Control</h5>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="performance-gauge mb-3">
+                            <svg width="120" height="120" class="transform -rotate-90">
+                                <circle cx="60" cy="60" r="50" class="gauge-bg"></circle>
+                                <circle cx="60" cy="60" r="50" class="gauge-fill" stroke="#8b5cf6" 
+                                        stroke-dasharray="314" stroke-dashoffset="45"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-600">4.4</div>
+                                    <div class="text-xs text-gray-500">Target: ≥4.0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Team Satisfaction</h5>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="performance-gauge mb-3">
+                            <svg width="120" height="120" class="transform -rotate-90">
+                                <circle cx="60" cy="60" r="50" class="gauge-bg"></circle>
+                                <circle cx="60" cy="60" r="50" class="gauge-fill" stroke="#f59e0b" 
+                                        stroke-dasharray="314" stroke-dashoffset="62"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-yellow-600">185%</div>
+                                    <div class="text-xs text-gray-500">Target: ≥150%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="font-semibold text-gray-700">Automation ROI</h5>
+                    </div>
+                </div>
+
+                <!-- Manager Responsibilities Matrix -->
+                <div class="mt-8 grid md:grid-cols-3 gap-4">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h6 class="font-semibold text-blue-800 mb-2">📅 Daily (2h)</h6>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Morning briefing</li>
+                            <li>• Dashboard monitoring</li>
+                            <li>• Issue resolution</li>
+                            <li>• Performance review</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h6 class="font-semibold text-green-800 mb-2">📊 Weekly</h6>
+                        <ul class="text-sm text-green-700 space-y-1">
+                            <li>• Strategic planning</li>
+                            <li>• Process improvement</li>
+                            <li>• Team development</li>
+                            <li>• Stakeholder reports</li>
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <h6 class="font-semibold text-purple-800 mb-2">🎯 Monthly</h6>
+                        <ul class="text-sm text-purple-700 space-y-1">
+                            <li>• Performance reviews</li>
+                            <li>• Innovation projects</li>
+                            <li>• Budget optimization</li>
+                            <li>• Technology upgrades</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Vai Trò Trưởng Ca -->
+        <section id="leader" class="mb-12 print-break">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-user-tie text-blue-600 mr-3"></i>Vai Trò Trưởng Ca
+            </h2>
+            
+            <!-- Working Leader Model -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-balance-scale text-blue-600 mr-3"></i>Working Leader Model
+                </h4>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-3">Agent Performance (80%)</h5>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="w-8 h-2 bg-blue-600 rounded-full mr-3"></div>
+                                <span class="text-sm">Xử lý 1-3 sessions đồng thời</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-2 bg-blue-500 rounded-full mr-3"></div>
+                                <span class="text-sm">Handle VIP customers</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-2 bg-blue-400 rounded-full mr-3"></div>
+                                <span class="text-sm">Complex case resolution</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-2 bg-blue-300 rounded-full mr-3"></div>
+                                <span class="text-sm">Maintain quality standards</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-3">Leadership Tasks (20%)</h5>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="w-6 h-2 bg-green-600 rounded-full mr-3"></div>
+                                <span class="text-sm">Team coordination</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-6 h-2 bg-green-500 rounded-full mr-3"></div>
+                                <span class="text-sm">Workload balancing</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-6 h-2 bg-green-400 rounded-full mr-3"></div>
+                                <span class="text-sm">Real-time coaching</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-6 h-2 bg-green-300 rounded-full mr-3"></div>
+                                <span class="text-sm">Escalation handling</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                    <h6 class="font-semibold text-gray-700 mb-2">🚨 Crisis Mode (10+ Sessions)</h6>
+                    <p class="text-sm text-gray-600 mb-2">Shift to: <strong>30% Agent, 70% Leadership</strong></p>
+                    <div class="grid md:grid-cols-4 gap-3 text-xs">
+                        <div class="bg-red-100 p-2 rounded text-red-800">Orchestrate response</div>
+                        <div class="bg-red-100 p-2 rounded text-red-800">Activate backup</div>
+                        <div class="bg-red-100 p-2 rounded text-red-800">Direct communication</div>
+                        <div class="bg-red-100 p-2 rounded text-red-800">Post-crisis analysis</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rotation System -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-sync-alt text-green-600 mr-3"></i>Rotation System
+                </h4>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-3">Chu Kỳ Rotation: 6 Tuần</h5>
+                        <div class="rotation-timeline">
+                            <div class="timeline-item">
+                                <strong>Tuần 1-3:</strong> Pairing cố định (NV1+NV2, NV3+NV4, NV5+NV6)
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Tuần 4-6:</strong> Cross-rotation (Experience sharing)
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Kết quả:</strong> Mỗi người làm trưởng ca 4/6 tuần
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-3">Công Bằng Leadership</h5>
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="bg-blue-50 p-3 rounded text-center">
+                                <div class="text-2xl font-bold text-blue-600">4</div>
+                                <div class="text-xs text-gray-600">tuần làm trưởng ca</div>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded text-center">
+                                <div class="text-2xl font-bold text-green-600">2</div>
+                                <div class="text-xs text-gray-600">tuần làm member</div>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded text-center">
+                                <div class="text-2xl font-bold text-purple-600">2</div>
+                                <div class="text-xs text-gray-600">tuần Ca A</div>
+                            </div>
+                            <div class="bg-yellow-50 p-3 rounded text-center">
+                                <div class="text-2xl font-bold text-yellow-600">2</div>
+                                <div class="text-xs text-gray-600">tuần Ca B</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trách Nhiệm Chi Tiết -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6">
+                    <h5 class="font-bold text-blue-800 mb-4 flex items-center">
+                        <i class="fas fa-user text-blue-600 mr-2"></i>Agent Duties (60-70%)
+                    </h5>
+                    <ul class="text-sm text-blue-700 space-y-2">
+                        <li>• Xử lý 1-3 sessions đồng thời</li>
+                        <li>• Handle VIP customers</li>
+                        <li>• Complex case resolution</li>
+                        <li>• Maintain quality standards</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6">
+                    <h5 class="font-bold text-green-800 mb-4 flex items-center">
+                        <i class="fas fa-users text-green-600 mr-2"></i>Leadership (20-30%)
+                    </h5>
+                    <ul class="text-sm text-green-700 space-y-2">
+                        <li>• Team coordination</li>
+                        <li>• Workload balancing</li>
+                        <li>• Real-time coaching</li>
+                        <li>• Escalation handling</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-6">
+                    <h5 class="font-bold text-red-800 mb-4 flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>Crisis Mode (10+ Sessions)
+                    </h5>
+                    <ul class="text-sm text-red-700 space-y-2">
+                        <li>• 30% Agent, 70% Leadership</li>
+                        <li>• Activate backup protocols</li>
+                        <li>• Emergency coordination</li>
+                        <li>• Management communication</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Hệ Thống Chia Ca -->
+        <section id="schedule" class="mb-12 print-break">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-calendar-alt text-purple-600 mr-3"></i>Hệ Thống Chia Ca
+            </h2>
+            
+            <!-- Schedule Overview -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-clock text-purple-600 mr-3"></i>Lịch Làm Việc Tuần
+                </h4>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-3 text-left">Nhân Viên</th>
+                                <th class="p-3 text-center">Thứ 2</th>
+                                <th class="p-3 text-center">Thứ 3</th>
+                                <th class="p-3 text-center">Thứ 4</th>
+                                <th class="p-3 text-center">Thứ 5</th>
+                                <th class="p-3 text-center">Thứ 6</th>
+                                <th class="p-3 text-center">Thứ 7</th>
+                                <th class="p-3 text-center">CN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold bg-blue-50">NV1 (TC)</td>
+                                <td class="p-3 text-center bg-blue-100">Ca A</td>
+                                <td class="p-3 text-center bg-blue-100">Ca A + M</td>
+                                <td class="p-3 text-center bg-blue-100">Ca A</td>
+                                <td class="p-3 text-center bg-blue-100">Ca A</td>
+                                <td class="p-3 text-center bg-blue-100">Ca A</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold bg-green-50">NV2 (TC)</td>
+                                <td class="p-3 text-center bg-green-100">Ca B</td>
+                                <td class="p-3 text-center bg-green-100">Ca B + M</td>
+                                <td class="p-3 text-center bg-green-100">Ca B</td>
+                                <td class="p-3 text-center bg-green-100">Ca B</td>
+                                <td class="p-3 text-center bg-green-100">Ca B</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">NV3</td>
+                                <td class="p-3 text-center">Ca A</td>
+                                <td class="p-3 text-center">Ca A + M</td>
+                                <td class="p-3 text-center">Ca A</td>
+                                <td class="p-3 text-center">Ca A</td>
+                                <td class="p-3 text-center">Ca A</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">NV4</td>
+                                <td class="p-3 text-center">Ca B</td>
+                                <td class="p-3 text-center">Ca B + M</td>
+                                <td class="p-3 text-center">Ca B</td>
+                                <td class="p-3 text-center">Ca B</td>
+                                <td class="p-3 text-center">Ca B</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">NV5</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center">Ca A</td>
+                                <td class="p-3 text-center">Ca B</td>
+                                <td class="p-3 text-center bg-yellow-100">Ca A</td>
+                                <td class="p-3 text-center bg-yellow-100">Ca B</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">NV6</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center bg-gray-100">OFF</td>
+                                <td class="p-3 text-center">Ca B</td>
+                                <td class="p-3 text-center">Ca A</td>
+                                <td class="p-3 text-center bg-yellow-100">Ca B</td>
+                                <td class="p-3 text-center bg-yellow-100">Ca A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 flex flex-wrap gap-4 text-xs">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-blue-100 border border-blue-300 rounded mr-2"></div>
+                        <span>Ca A (08:00-16:00)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-green-100 border border-green-300 rounded mr-2"></div>
+                        <span>Ca B (13:00-21:00)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-yellow-100 border border-yellow-300 rounded mr-2"></div>
+                        <span>Cuối tuần</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-gray-100 border border-gray-300 rounded mr-2"></div>
+                        <span>OFF</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-purple-600 font-semibold">TC = Trưởng Ca</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-blue-600">M = Meeting</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staffing by Time -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-users text-blue-600 mr-3"></i>Phân Bổ Theo Giờ - Ngày Thường
+                    </h4>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                            <span class="text-sm font-medium">08:00-09:00</span>
+                            <span class="text-sm">2 người (Thấp điểm)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-red-50 rounded">
+                            <span class="text-sm font-medium">09:00-11:00</span>
+                            <span class="text-sm font-bold text-red-600">4 người (Cao điểm sáng)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                            <span class="text-sm font-medium">11:00-13:00</span>
+                            <span class="text-sm">2 người (Thấp điểm)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-blue-50 rounded">
+                            <span class="text-sm font-medium">13:00-14:00</span>
+                            <span class="text-sm text-blue-600">4 người (Overlap)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-red-50 rounded">
+                            <span class="text-sm font-medium">14:00-16:00</span>
+                            <span class="text-sm font-bold text-red-600">6 người (Cao điểm chiều)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                            <span class="text-sm font-medium">16:00-21:00</span>
+                            <span class="text-sm">2 người (Thấp điểm)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-calendar-week text-green-600 mr-3"></i>Cuối Tuần (50% Workload)
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-yellow-50 rounded-lg p-4">
+                            <h5 class="font-semibold text-yellow-800 mb-2">Thứ 7</h5>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div>Ca A: NV5</div>
+                                <div>Ca B: NV6</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-yellow-50 rounded-lg p-4">
+                            <h5 class="font-semibold text-yellow-800 mb-2">Chủ Nhật</h5>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div>Ca A: NV6</div>
+                                <div>Ca B: NV5</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-3">
+                            <h6 class="font-semibold text-blue-800 text-sm mb-1">Coverage Details</h6>
+                            <div class="text-xs text-blue-700 space-y-1">
+                                <div>• 08:00-13:00: 2 người (Ca A)</div>
+                                <div>• 13:00-16:00: 2 người (Overlap)</div>
+                                <div>• 16:00-21:00: 2 người (Ca B)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4-Week Advance Planning -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-calendar-plus text-purple-600 mr-3"></i>Hệ Thống Đăng Ký 4 Tuần
+                </h4>
+                
+                <div class="grid md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600 mb-2">Tuần 1</div>
+                        <div class="text-sm text-blue-700">Đăng ký lịch</div>
+                        <div class="text-xs text-gray-600 mt-1">Deadline: Thứ 6, 17:00</div>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600 mb-2">Tuần 2-3</div>
+                        <div class="text-sm text-green-700">Xử lý & Điều chỉnh</div>
+                        <div class="text-xs text-gray-600 mt-1">Conflict resolution</div>
+                    </div>
+                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-600 mb-2">Tuần 4</div>
+                        <div class="text-sm text-purple-700">Thực hiện lịch</div>
+                        <div class="text-xs text-gray-600 mt-1">Final schedule</div>
+                    </div>
+                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">24/7</div>
+                        <div class="text-sm text-yellow-700">Emergency adjust</div>
+                        <div class="text-xs text-gray-600 mt-1">Real-time backup</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h5 class="font-semibold text-gray-700 mb-3">📋 Quy Trình Đăng Ký</h5>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <h6 class="font-semibold text-gray-600 mb-2">Members Submit:</h6>
+                            <ul class="space-y-1 text-gray-600">
+                                <li>• Preferred shifts mỗi ngày</li>
+                                <li>• Planned leave requests</li>
+                                <li>• Personal constraints</li>
+                                <li>• Special requirements</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6 class="font-semibold text-gray-600 mb-2">Manager Process:</h6>
+                            <ul class="space-y-1 text-gray-600">
+                                <li>• Balance workload distribution</li>
+                                <li>• Ensure coverage requirements</li>
+                                <li>• Resolve scheduling conflicts</li>
+                                <li>• Confirm backup arrangements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Đánh Giá & Báo Cáo -->
+        <section id="evaluation" class="mb-12 print-break">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-chart-line text-red-600 mr-3"></i>Đánh Giá & Báo Cáo
+            </h2>
+            
+            <!-- Daily Shift Report Template -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-file-alt text-blue-600 mr-3"></i>Template Báo Cáo Cuối Ca
+                </h4>
+                
+                <div class="bg-gray-50 rounded-lg p-4 font-mono text-sm">
+                    <div class="mb-4">
+                        <div class="text-blue-600 font-bold">📋 BÁO CÁO CUỐI CA</div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="mb-3">
+                                <span class="text-gray-600">🗓️ Ngày:</span> [DD/MM/YYYY]<br>
+                                <span class="text-gray-600">⏰ Ca:</span> [A: 08:00-16:00 / B: 13:00-21:00]<br>
+                                <span class="text-gray-600">👤 Trưởng Ca:</span> [Tên]<br>
+                                <span class="text-gray-600">👥 Team:</span> [NV1, NV2, NV3...]
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="text-green-600 font-semibold">📊 THỐNG KÊ CA:</div>
+                                <span class="text-gray-600">• Total sessions:</span> [Số]<br>
+                                <span class="text-gray-600">• Peak time:</span> [HH:MM-HH:MM]<br>
+                                <span class="text-gray-600">• Response time:</span> [Phút]<br>
+                                <span class="text-gray-600">• Escalations:</span> [Số]
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="mb-3">
+                                <div class="text-yellow-600 font-semibold">⚠️ ISSUES & ACTIONS:</div>
+                                <span class="text-gray-600">• Vấn đề:</span> [Mô tả hoặc "None"]<br>
+                                <span class="text-gray-600">• Action taken:</span> [Giải pháp]<br>
+                                <span class="text-gray-600">• Status:</span> [Resolved/Pending]
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="text-purple-600 font-semibold">🔄 HANDOVER:</div>
+                                <span class="text-gray-600">• Pending cases:</span> [Số + priority]<br>
+                                <span class="text-gray-600">• Follow-up:</span> [Chi tiết]<br>
+                                <span class="text-gray-600">• Team notes:</span> [Thông tin]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member Evaluation -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-user-check text-green-600 mr-3"></i>Đánh Giá Team Members
+                </h4>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h5 class="font-bold text-blue-800 mb-3">📞 Customer Handling (40%)</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Response Time</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Service Quality</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Problem Resolution</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-blue-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h5 class="font-bold text-green-800 mb-3">🤝 Teamwork (30%)</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Collaboration</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Communication</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Proactive Support</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-green-600 rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <h5 class="font-bold text-purple-800 mb-3">💼 Professional Skills (30%)</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Technical Knowledge</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Adaptability</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Learning Attitude</span>
+                                <div class="flex space-x-1">
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                    <span class="w-4 h-4 bg-purple-600 rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid md:grid-cols-4 gap-4">
+                    <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                        <div class="text-yellow-600 text-xl font-bold">⭐</div>
+                        <div class="text-sm font-semibold">Star Performer</div>
+                        <div class="text-xs text-gray-600">Excellence in service</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 text-center">
+                        <div class="text-blue-600 text-xl font-bold">💎</div>
+                        <div class="text-sm font-semibold">Team Player</div>
+                        <div class="text-xs text-gray-600">Outstanding collaboration</div>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-3 text-center">
+                        <div class="text-green-600 text-xl font-bold">🚀</div>
+                        <div class="text-sm font-semibold">Most Improved</div>
+                        <div class="text-xs text-gray-600">Significant progress</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-3 text-center">
+                        <div class="text-purple-600 text-xl font-bold">🎯</div>
+                        <div class="text-sm font-semibold">Problem Solver</div>
+                        <div class="text-xs text-gray-600">Creative solutions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Dashboard -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-tachometer-alt text-red-600 mr-3"></i>Performance Dashboard - Tổng Quan
+                </h4>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-3">📈 Service Level Metrics</h5>
+                        <div class="chart-container">
+                            <canvas id="serviceMetricsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-3">👥 Team Performance</h5>
+                        <div class="chart-container">
+                            <canvas id="teamPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-4 text-center">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="text-3xl font-bold text-blue-600">96%</div>
+                        <div class="text-sm text-gray-600">Service Level</div>
+                        <div class="text-xs text-green-600">Target: ≥95% ✓</div>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <div class="text-3xl font-bold text-green-600">4.6</div>
+                        <div class="text-sm text-gray-600">Customer Satisfaction</div>
+                        <div class="text-xs text-green-600">Target: ≥4.5 ✓</div>
+                    </div>
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                        <div class="text-3xl font-bold text-yellow-600">82%</div>
+                        <div class="text-sm text-gray-600">First Call Resolution</div>
+                        <div class="text-xs text-green-600">Target: ≥80% ✓</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <div class="text-3xl font-bold text-purple-600">7.2</div>
+                        <div class="text-sm text-gray-600">Avg Handle Time (min)</div>
+                        <div class="text-xs text-green-600">Target: ≤8 min ✓</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8 no-print">
+            <div class="text-center">
+                <h3 class="text-xl font-bold mb-2">Hệ Thống Customer Service Hoàn Chỉnh</h3>
+                <p class="text-gray-300 mb-4">Framework tối ưu cho dịch vụ khách hàng chuyên nghiệp</p>
+                <div class="flex justify-center space-x-6 text-sm">
+                    <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i>40h/tuần per person</span>
+                    <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i>Work-life balance</span>
+                    <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i>Performance excellence</span>
+                    <span class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i>Continuous improvement</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Capacity Analysis Chart
+        const capacityCtx = document.getElementById('capacityChart').getContext('2d');
+        new Chart(capacityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Coverage Required', 'Backup Buffer', 'Training & Leave'],
+                datasets: [{
+                    data: [91, 149, 40],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Workload Distribution Chart
+        const workloadCtx = document.getElementById('workloadChart').getContext('2d');
+        new Chart(workloadCtx, {
+            type: 'bar',
+            data: {
+                labels: ['08:00-09:00', '09:00-11:00', '11:00-14:00', '14:00-16:00', '16:00-21:00'],
+                datasets: [{
+                    label: 'Số người',
+                    data: [2, 4, 2, 6, 2],
+                    backgroundColor: ['#6b7280', '#ef4444', '#6b7280', '#ef4444', '#6b7280'],
+                    borderRadius: 4,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 6,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Service Metrics Chart
+        const serviceCtx = document.getElementById('serviceMetricsChart').getContext('2d');
+        new Chart(serviceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Service Level (%)',
+                    data: [94, 96, 95, 98],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Customer Satisfaction',
+                    data: [4.5, 4.6, 4.4, 4.7],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: false,
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        position: 'left'
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        min: 0,
+                        max: 5,
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Team Performance Chart
+        const teamCtx = document.getElementById('teamPerformanceChart').getContext('2d');
+        new Chart(teamCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Response Time', 'Quality', 'Teamwork', 'Leadership', 'Innovation', 'Customer Focus'],
+                datasets: [{
+                    label: 'Team Average',
+                    data: [85, 92, 88, 78, 82, 94],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    pointBackgroundColor: '#8b5cf6',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#8b5cf6'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add active state to navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('text-blue-600', 'font-semibold');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('text-blue-600', 'font-semibold');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
